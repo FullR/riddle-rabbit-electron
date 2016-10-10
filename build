@@ -1,0 +1,23 @@
+#!/bin/bash
+
+build_rr() {
+  local name="$1"
+
+  local src_dir="$name/web"
+  local elec_dir="$name/electron"
+  local build_dir="$elec_dir/builds"
+
+  mkdir -p $build_dir
+  rm -rf $build_dir/*
+
+  mkdir -p $elec_dir/www
+  rm -rf $elec_dir/www/*
+
+  cp -R $src_dir/* $elec_dir/www
+
+  find $elec_dir/www -type f -name "*.ogg" -delete
+  ./node_modules/.bin/electron-packager $elec_dir "Riddle Rabbit $name" --version 1.4.2 --platform=darwin --arch=all --icon=osx-icon.icns --out=$build_dir
+}
+
+build_rr PreK
+build_rr K-1
